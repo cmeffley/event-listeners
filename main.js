@@ -63,6 +63,9 @@ const pies = [
   },
 ];
 
+let filtered = false;
+const selectedPies = [];
+
 const printToDom = (divId, textToPrint) => {
   const selectedDiv = document.querySelector(divId);
   selectedDiv.innerHTML = textToPrint;
@@ -106,7 +109,7 @@ const handleButtonClick = (e) => {
   }
 
   // UPDATE THE PIES BASED ON BUTTON CLICKED
-  const selectedPies = [];
+  //const selectedPies = [];
   // pies[0].instructor // 'Doc'
   for (let i = 0; i < pies.length; i++) {
     if (pies[i].instructor === buttonId) {
@@ -116,10 +119,14 @@ const handleButtonClick = (e) => {
 
   if (buttonId === 'All') {
     // PRINT ALL THE PIES
+    filtered = false;
     pieBuilder(pies);
   } else {
+    filtered = true;
     pieBuilder(selectedPies);
   }
+
+console.log(filtered);
 
 }
 //C IN CRUD: CREATE NEW PIES
@@ -155,11 +162,27 @@ document.querySelector('form').reset();
 
 }
 
+//D in CRUD : DELETE THE PIES
+const deletePies = (e) => {
+  const targetType = e.target.type;
+  const targetId = e.target.id;
+  
+  if (targetType === 'button') {
+    pies.splice(targetId, 1);
+  } 
+  pieBuilder(pies);
+}
+
 const buttonEvents = () => {
   document.querySelector('#All').addEventListener('click', handleButtonClick);
   document.querySelector('#Doc').addEventListener('click', handleButtonClick);
   document.querySelector('#Aja').addEventListener('click', handleButtonClick);
   document.querySelector('#Trinity').addEventListener('click', handleButtonClick);
+
+  //Target the Delete Button
+  document.querySelector('#pies').addEventListener('click', deletePies);
+
+//Target submit button
   document.querySelector('form').addEventListener('submit', getFormInfo);
 }
 const init = () => {
